@@ -2,20 +2,20 @@
 
 import React, { useState } from "react";
 import axios from "axios";
-
 import { useRouter } from "next/navigation";
 import { baseURL } from "@/config/baseUrl";
 
 const BlogPostForm = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [category, setCategory] = useState("");
   const [media, setMedia] = useState<File[]>([]);
   const [previewUrls, setPreviewUrls] = useState<
     { url: string; type: string }[]
   >([]);
   const [message, setMessage] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
-
+const categories = ["Advertisement", "Politics", "Business", "Sports", "Technology", "Entertainment"];
   const router = useRouter();
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
@@ -35,6 +35,7 @@ const BlogPostForm = () => {
     const formData = new FormData();
     formData.append("title", title);
     formData.append("content", content);
+    formData.append("category", category);
     media.forEach((file) => {
       formData.append("media", file);
     });
@@ -49,6 +50,7 @@ const BlogPostForm = () => {
         setMessage("✅ Post created successfully!");
         setTitle("");
         setContent("");
+        setCategory("");
         setMedia([]);
         setPreviewUrls([]);
         setTimeout(() => {
@@ -63,10 +65,10 @@ const BlogPostForm = () => {
     }
   };
 
-  return (
+  return (<div className="flex justify-center items-center bg-gray-400 min-h-screen">
     <form
       onSubmit={handleSubmit}
-      className="max-w-2xl mx-auto p-6 bg-white shadow-md rounded-md space-y-4"
+      className=" bg-white  mx-auto p-6 shadow-md rounded-md space-y-4"
     >
       <h2 className="text-xl font-bold text-center">Create a Blog Post</h2>
 
@@ -79,6 +81,23 @@ const BlogPostForm = () => {
         required
       />
 
+<select
+  value={category}
+  onChange={(e) => setCategory(e.target.value)}
+  className="w-full p-2 border rounded"
+  required
+>
+  <option value="" disabled>
+    Select category
+  </option>
+  {categories.map((cat) => (
+    <option key={cat} value={cat}>
+      {cat}
+    </option>
+  ))}
+</select>
+
+        
       <textarea
         placeholder="Write your article here..."
         className="w-full p-2 h-40 border rounded"
@@ -126,7 +145,7 @@ const BlogPostForm = () => {
       {message && (
         <p className="text-center text-sm text-green-600">{message}</p>
       )}
-    </form>
+    </form></div>
   );
 };
 

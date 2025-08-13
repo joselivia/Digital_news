@@ -14,10 +14,12 @@ import {
   Twitter,
   Instagram,
 } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 
 interface BlogPost {
   id: number;
   title: string;
+  category: string;
   content: string;
   created_at: string;
 }
@@ -35,65 +37,76 @@ const BlogListPage = () => {
   const [postsLoading, setPostsLoading] = useState(true);
   const [mediaLoading, setMediaLoading] = useState(true);
   const [error, setError] = useState("");
+  
+  const searchParams = useSearchParams();
+  const category = searchParams.get("category") || "home"; 
   const { mediaMap, setMedia } = useMediaStore() || {
     mediaMap: {},
     setMedia: () => {},
   };
 
-  // Memoize derived data to prevent unnecessary recalculations
   const featuredPost = useMemo(() => posts[0], [posts]);
   const latestPosts = useMemo(() => posts.slice(1, 5), [posts]);
   const mainNewsGrid = useMemo(() => posts.slice(5), [posts]);
 
-  useEffect(() => {
-    const fetchPostsAndMedia = async () => {
-      setPostsLoading(true);
-      setMediaLoading(true);
-      setError("");
+useEffect(() => {
+  const fetchPostsAndMedia = async () => {
+    setPostsLoading(true);
+    setMediaLoading(true);
+    setError("");
 
-      try {
-        // Fetch posts
-        const res = await axios.get(`${baseURL}/api/posts?limit=15&offset=0`);
-        const fetchedPosts = res.data?.posts || [];
-        const sortedPosts = fetchedPosts.sort(
+    try {
+      const res = await axios.get(`${baseURL}/api/posts`, {
+        params: { 
+          limit: 15, 
+          offset: 0, 
+          category 
+        }
+      });
+
+      const fetchedPosts = res.data?.posts || [];
+
+      const sortedPosts = fetchedPosts
+        .filter((p: BlogPost) => p.content && typeof p.content === "string")
+        .sort(
           (a: BlogPost, b: BlogPost) =>
             new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
         );
-        setPosts(sortedPosts);
-        setPostsLoading(false);
 
-       const mediaPromises = sortedPosts.map(async (post: BlogPost) => {
-          if (!mediaMap[post.id]) {
-            try {
-              const mediaRes = await axios.get(`${baseURL}/api/posts/${post.id}`);
-              const { images = [], videos = [] } = mediaRes.data as MediaContent;
-              return { postId: post.id, media: { images, videos } };
-            } catch (err) {
-              console.error(`❌ Failed to load media for post ${post.id}`, err);
-              return { postId: post.id, media: { images: [], videos: [] } };
-            }
+      setPosts(sortedPosts);
+      setPostsLoading(false);
+
+      const mediaPromises = sortedPosts.map(async (post: BlogPost) => {
+        if (!mediaMap[post.id]) {
+          try {
+            const mediaRes = await axios.get(`${baseURL}/api/posts/${post.id}`);
+            const { images = [], videos = [] } = mediaRes.data as MediaContent;
+            return { postId: post.id, media: { images, videos } };
+          } catch (err) {
+            console.error(`❌ Failed to load media for post ${post.id}`, err);
+            return { postId: post.id, media: { images: [], videos: [] } };
           }
-          return null;
-        });
+        }
+        return null;
+      });
 
-        const mediaResults = await Promise.all(mediaPromises);
-        mediaResults.forEach((result) => {
-          if (result) {
-            setMedia?.(result.postId, result.media);
-          }
-        });
-      } catch (err) {
-        console.error("❌ Error fetching posts:", err);
-        setError("Failed to fetch blog posts. Please try again.");
-        setPostsLoading(false);
-      } finally {
-        setMediaLoading(false);
-      }
-    };
+      const mediaResults = await Promise.all(mediaPromises);
+      mediaResults.forEach((result) => {
+        if (result) {
+          setMedia?.(result.postId, result.media);
+        }
+      });
+    } catch (err) {
+      console.error("❌ Error fetching posts:", err);
+      setError("Failed to fetch blog posts. Please try again.");
+      setPostsLoading(false);
+    } finally {
+      setMediaLoading(false);
+    }
+  };
 
-    fetchPostsAndMedia();
-  }, []); // Empty dependency array to run only once on mount
-
+  fetchPostsAndMedia();
+}, [category]);
   const renderMedia = (post: BlogPost, media: MediaContent | undefined, className: string) => {
     if (!media || mediaLoading) {
       return (
@@ -212,7 +225,7 @@ const BlogListPage = () => {
                         {new Date(featuredPost.created_at).toLocaleDateString("en-KE", { dateStyle: "medium" })}
                       </p>
                       <p className="text-gray-700 text-base mb-6 line-clamp-4">
-                        {truncate(featuredPost.content, 200)}
+                        {(featuredPost.content)}
                       </p>
                     </div>
                     <div className="flex items-center justify-between">

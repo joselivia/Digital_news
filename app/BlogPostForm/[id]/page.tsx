@@ -135,7 +135,7 @@ const BlogDetailsPage = () => {
                   key={idx}
                   src={img.startsWith('data:') ? img : `${baseURL}/${img}`}
                   alt={`Post image ${idx}`}
-                  className="w-full h-56 object-cover rounded-lg shadow-md border border-gray-200 transform hover:scale-[1.03] transition-transform duration-200 ease-in-out"
+                  className="w-full h-56 object-fill rounded-lg shadow-md border border-gray-200 transform hover:scale-[1.03] transition-transform duration-200 ease-in-out"
                   onError={(e) => {
                     (e.target as HTMLImageElement).onerror = null;
                     (e.target as HTMLImageElement).src = "https://placehold.co/600x400/E2E8F0/A0AEC0?text=Image+Load+Error";
