@@ -63,9 +63,7 @@ useEffect(() => {
           category 
         }
       });
-
       const fetchedPosts = res.data?.posts || [];
-
       const sortedPosts = fetchedPosts
         .filter((p: BlogPost) => p.content && typeof p.content === "string")
         .sort(

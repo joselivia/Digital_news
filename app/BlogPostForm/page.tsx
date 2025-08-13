@@ -1,10 +1,8 @@
 "use client";
-
 import React, { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { baseURL } from "@/config/baseUrl";
-
 const BlogPostForm = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -95,9 +93,7 @@ const categories = ["Advertisement", "Politics", "Business", "Sports", "Technolo
       {cat}
     </option>
   ))}
-</select>
-
-        
+</select>        
       <textarea
         placeholder="Write your article here..."
         className="w-full p-2 h-40 border rounded"

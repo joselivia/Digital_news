@@ -1,5 +1,6 @@
 import BlogListPage from "@/components/Blogs";
 import Link from "next/link";
+import { Suspense } from "react";
 
 export default function Home() {
   return (
@@ -15,8 +16,12 @@ export default function Home() {
           + Create Blog
         </Link>
       </div>
-      <div className="flex-grow">
-        <BlogListPage />
+      <div className="flex-grow">     
+
+    <Suspense fallback={<div>Loading...</div>}>
+    <BlogListPage />
+    </Suspense>
+
       </div>
     </div>
   );
