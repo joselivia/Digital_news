@@ -21,7 +21,7 @@ export default function Navbar() {
     ...categories.map((cat) => ({
       label: cat,
       href: `/?category=${encodeURIComponent(cat)}`,
-    })),
+    })),  { label: "Login", href: "/Login" },
   ];
 
   const toggleSidebar = () => setSidebarOpen((v) => !v);

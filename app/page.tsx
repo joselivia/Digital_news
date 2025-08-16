@@ -9,12 +9,25 @@ export default function Home() {
         <h1 className="text-4xl font-bold text-white text-center">
           📰📰 Latest News
         </h1>
+        <div className="flex space-x-4">
         <Link
           href="/BlogPostForm"
-          className="bg-blue-600 hover:bg-blue-700 text-white font-bold p-2 rounded-full transition-colors duration-200 shadow-md hidden sm:block"
+          className="bg-green-600 hover:bg-green-700 text-white font-bold p-2 rounded-full transition-colors duration-200 shadow-md hidden sm:block"
         >
           + Create Blog
         </Link>
+         <Link
+          href="/Login/update-admin"
+          className="bg-blue-600 hover:bg-blue-700 text-white font-bold p-2 rounded-full transition-colors duration-200 shadow-md hidden sm:block"
+        >
+       Update-Logins
+        </Link>
+         <Link
+          href="/BlogPostForm"
+          className="bg-red-600 hover:bg-red-700 text-white font-bold p-2 rounded-full transition-colors duration-200 shadow-md hidden sm:block"
+        >
+          Logout
+        </Link></div>
       </div>
       <div className="flex-grow">     
 

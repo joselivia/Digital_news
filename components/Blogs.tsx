@@ -56,7 +56,7 @@ useEffect(() => {
     setError("");
 
     try {
-      const res = await axios.get(`${baseURL}/api/posts`, {
+      const res = await axios.get(`${baseURL}/api/blogs/posts`, {
         params: { 
           limit: 15, 
           offset: 0, 
@@ -77,7 +77,7 @@ useEffect(() => {
       const mediaPromises = sortedPosts.map(async (post: BlogPost) => {
         if (!mediaMap[post.id]) {
           try {
-            const mediaRes = await axios.get(`${baseURL}/api/posts/${post.id}`);
+            const mediaRes = await axios.get(`${baseURL}/api/blogs/posts/${post.id}`);
             const { images = [], videos = [] } = mediaRes.data as MediaContent;
             return { postId: post.id, media: { images, videos } };
           } catch (err) {

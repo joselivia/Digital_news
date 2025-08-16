@@ -39,7 +39,7 @@ const categories = ["Advertisement", "Politics", "Business", "Sports", "Technolo
     });
 
     try {
-      const res = await axios.post(`${baseURL}/api/posts`, formData, {
+      const res = await axios.post(`${baseURL}/api/blogs/posts`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

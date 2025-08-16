@@ -22,7 +22,7 @@ const UpdateAdminForm = () => {
     setMessage(null);
 
     try {
-      const res = await axios.put(`${baseURL}/update-admin`, {
+      const res = await axios.put(`${baseURL}/api/update-admin`, {
         currentEmail,
         currentPassword,
         newEmail,
@@ -30,7 +30,7 @@ const UpdateAdminForm = () => {
       });
 
       setMessage({ type: "success", text: res.data.message });
-      router.push("/Reports");
+      router.push("/Login");
     } catch (err: any) {
       setMessage({
         type: "error",
