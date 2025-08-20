@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { baseURL } from "@/config/baseUrl";
+import axios from "axios";
 
 export default function AdminLogin() {
   const router = useRouter();
@@ -17,23 +18,19 @@ export default function AdminLogin() {
     setError("");
 
     try {
-      const res = await fetch(`${baseURL}/api/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+      const res = await axios.post(`${baseURL}/api/login`, { email, password });
 
-      const data = await res.json();
-      console.log(data);
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
 
-      if (res.ok) { localStorage.setItem("isAdmin","true")
-        router.push("/"); 
+      if (res.data.user.role === "admin") {
+        router.push("/Login/Admin");
       } else {
-        setError(data.message || "Login failed");
+        router.push("/");
       }
-    } catch (err) {
-      console.error("Network error:", err);
-      setError("Unable to connect to server.");
+    } catch (err: any) {
+      console.error("Login failed", err);
+      setError(err.response?.data?.error || "Login failed");
     } finally {
       setLoading(false);
     }
@@ -43,12 +40,10 @@ export default function AdminLogin() {
     <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
       <div className="w-full max-w-md bg-white p-8 rounded-xl shadow-md">
         <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
-          Admin Login
+          Admin/Staff Login
         </h2>
 
-        {error && (
-          <p className="mb-4 text-sm text-red-600 text-center">{error}</p>
-        )}
+        {error && <p className="mb-4 text-sm text-red-600 text-center">{error}</p>}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
