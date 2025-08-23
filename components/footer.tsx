@@ -1,6 +1,6 @@
 import React from "react";
-import Link from "next/link";
-import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
+import { FaFacebook,FaInstagram } from "react-icons/fa";
+import { FaTiktok, FaXTwitter } from "react-icons/fa6";
 
 const Footer = () => {
   return (
@@ -23,7 +23,6 @@ const Footer = () => {
             </ol>
           </div>
 
-          {/* Social Media */}
           <div className="flex flex-col items-center md:items-start">
             <h3 className="text-lg font-semibold mb-2">Follow Us</h3>
             <div className="flex space-x-4">
@@ -41,7 +40,7 @@ const Footer = () => {
                 rel="noopener noreferrer"
                 className="hover:text-blue-400"
               >
-                <FaTwitter size={24} />
+                <FaXTwitter size={24} />
               </a>
               <a
                 href="https://instagram.com"
@@ -52,12 +51,12 @@ const Footer = () => {
                 <FaInstagram size={24} />
               </a>
               <a
-                href="https://linkedin.com"
+                href="https://tiktok.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-blue-700"
               >
-                <FaLinkedin size={24} />
+                <FaTiktok size={24} />
               </a>
             </div>
           </div>
@@ -67,7 +66,7 @@ const Footer = () => {
           &copy; {new Date().getFullYear()} The Daily Express. All rights
           reserved.
                <p className="text-lg mt-2 border-t ">
-            powered by:
+           🧑‍💻 powered by:
             <a
               target="_blank"
               href="https://portfolio-gilt-six-94.vercel.app/"

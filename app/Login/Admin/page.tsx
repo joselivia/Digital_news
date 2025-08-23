@@ -10,13 +10,11 @@ export default function AdminPage() {
   const [posts, setPosts] = useState<any[]>([]);
   const [token, setToken] = useState<string | null>(null);
 
-  // ✅ Get token on client side
   useEffect(() => {
     const savedToken = localStorage.getItem("token");
     setToken(savedToken);
   }, []);
 
-  // ✅ Fetch staff only if token exists
   useEffect(() => {
     if (!token) return;
     axios
@@ -27,7 +25,6 @@ export default function AdminPage() {
       .catch((err) => console.error("Failed to fetch staff", err));
   }, [token]);
 
-  // Add staff
   const addStaff = async () => {
     if (!newEmail.trim() || !newPassword.trim()) {
       alert("⚠️ Email and password cannot be empty");
@@ -43,7 +40,6 @@ export default function AdminPage() {
     location.reload();
   };
 
-  // Remove staff
   const removeStaff = async (id: number) => {
     await axios.delete(`${baseURL}/api/manage-staff/staff/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
@@ -52,17 +48,15 @@ export default function AdminPage() {
   };
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Admin Dashboard</h1>
-
+    <div className="">
+      <h1 className="text-2xl font-bold text-center ">Admin Dashboard</h1>
       {!token ? (
         <p className="text-red-500">
           You must be logged in as an admin to view this page.
         </p>
       ) : (
-        <>
-          {/* Staff Management */}
-          <section className="mb-8">
+        <div className="min-h-screen flex justify-center items-center">
+          <section className="">
             <h2 className="text-xl font-semibold">Manage Staff</h2>
             <div className="mt-2">
               <input
@@ -104,7 +98,7 @@ export default function AdminPage() {
               ))}
             </ul>
           </section>
-        </>
+        </div>
       )}
     </div>
   );
