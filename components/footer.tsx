@@ -65,16 +65,6 @@ const Footer = () => {
         <div className="mt-8 text-center text-sm">
           &copy; {new Date().getFullYear()} The Daily Express. All rights
           reserved.
-               <p className="text-lg mt-2 border-t ">
-           🧑‍💻 powered by:
-            <a
-              target="_blank"
-              href="https://portfolio-gilt-six-94.vercel.app/"
-              className="hover:underline text-blue-500"
-            >
-              Jomu_Digital
-            </a>
-          </p>
         </div>
       </div>
     </footer>

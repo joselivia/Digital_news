@@ -152,7 +152,7 @@ export default function Home() {
 
       <div className="flex-grow">
         <Suspense fallback={<div>Loading...</div>}>
-          <BlogListPage />
+          < BlogListPage   />
         </Suspense>
       </div>
     </div>
