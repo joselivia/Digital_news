@@ -8,13 +8,13 @@ import Image from "next/image";
 export default function Navbar() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const categories = [
-    "Advertisement",
-    "Politics",
+  const categories = ["Politics",
+  
+    
     "Business",
     "Sports",
     "Technology",
-    "Entertainment",
+    "Entertainment",  "Advertisement",
   ];
 
   const navItems = [
